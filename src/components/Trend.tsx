@@ -1,3 +1,4 @@
+import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import { useCallback, useMemo } from "react";
 
 type TrendProps = {
@@ -41,7 +42,9 @@ const Trend: React.FC<TrendProps> = ({ type, amount, prevAmount }) => {
         {amount ? formatCurrency(amount) : formatCurrency(0)}
       </div>
       <div className="text-sm flex space-x-1 items-center">
-        {percentageChange}%
+        {percentageChange < 0 && <ArrowDownLeft />}
+        {percentageChange > 0 && <ArrowUpRight />}
+        <div>{percentageChange}%</div>
       </div>
     </div>
   );
