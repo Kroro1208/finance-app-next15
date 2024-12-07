@@ -9,8 +9,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "next lint",
-    "type-check": "tsc --noEmit",
-    "test": "jest"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "next": "15.0.4",
