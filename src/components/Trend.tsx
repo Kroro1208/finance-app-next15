@@ -1,3 +1,4 @@
+import { useFormatCurrency } from "@/app/hooks/UseFormatCurrency";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import { useCallback, useMemo } from "react";
 
@@ -21,25 +22,21 @@ const Trend: React.FC<TrendProps> = ({ type, amount, prevAmount }) => {
       if (!prevAmount || prevAmount === 0) return 0;
       return ((amount - prevAmount) / prevAmount) * 100;
     },
-    [],
+    []
   );
 
   const percentageChange = useMemo(
     () => calcPercentageChange(amount, prevAmount),
-    [amount, prevAmount, calcPercentageChange],
+    [amount, prevAmount, calcPercentageChange]
   );
 
-  const formatCurrency = (amount: number): string => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "JPY",
-    }).format(amount);
-  };
+  const formattedCurrency = useFormatCurrency(amount);
+
   return (
     <div className="flex flex-col">
       <div className={`${colorClasses[type]} font-semibold`}>{type}</div>
       <div className="text-2xl font-semibold text-black dark:text-white mb-2">
-        {amount ? formatCurrency(amount) : formatCurrency(0)}
+        {formattedCurrency}
       </div>
       <div className="text-xs flex space-x-1 items-center">
         {percentageChange < 0 && (
