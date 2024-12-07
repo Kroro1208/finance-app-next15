@@ -41,9 +41,21 @@ const Trend: React.FC<TrendProps> = ({ type, amount, prevAmount }) => {
       <div className="text-2xl font-semibold text-black dark:text-white mb-2">
         {amount ? formatCurrency(amount) : formatCurrency(0)}
       </div>
-      <div className="text-sm flex space-x-1 items-center">
-        {percentageChange < 0 && <ArrowDownLeft />}
-        {percentageChange > 0 && <ArrowUpRight />}
+      <div className="text-xs flex space-x-1 items-center">
+        {percentageChange < 0 && (
+          <ArrowDownLeft
+            className="text-red-500"
+            size={20}
+            data-testid="arrow-down"
+          />
+        )}
+        {percentageChange > 0 && (
+          <ArrowUpRight
+            className="text-green-500"
+            size={20}
+            data-testid="arrow-up"
+          />
+        )}
         <div>{percentageChange}%</div>
       </div>
     </div>
