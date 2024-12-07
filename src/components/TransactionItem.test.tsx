@@ -23,7 +23,7 @@ describe("TransactionItem Component", () => {
         description="Salary"
         amount={10000}
         category="Work"
-      />
+      />,
     );
 
     expect(screen.getByText("Salary")).toBeInTheDocument();
@@ -38,7 +38,7 @@ describe("TransactionItem Component", () => {
         type="Investment"
         description="Stock Purchase"
         amount={5000}
-      />
+      />,
     );
 
     const icon = screen.getByRole("img", { hidden: true });
@@ -54,7 +54,7 @@ describe("TransactionItem Component", () => {
         description="Emergency Fund"
         amount={3000}
         category="Savings"
-      />
+      />,
     );
 
     expect(screen.getByText("Savings")).toBeInTheDocument();
@@ -64,7 +64,7 @@ describe("TransactionItem Component", () => {
     (useFormatCurrency as vi.Mock).mockReturnValue("¥5,000");
 
     render(
-      <TransactionItem type="Expense" description="Groceries" amount={5000} />
+      <TransactionItem type="Expense" description="Groceries" amount={5000} />,
     );
 
     expect(screen.queryByText("Savings")).not.toBeInTheDocument();
@@ -74,7 +74,7 @@ describe("TransactionItem Component", () => {
     (useFormatCurrency as vi.Mock).mockReturnValue("¥10,000");
 
     render(
-      <TransactionItem type="Income" description="Bonus" amount={20000} />
+      <TransactionItem type="Income" description="Bonus" amount={20000} />,
     );
 
     const icon = screen.getByRole("img", { hidden: true });
