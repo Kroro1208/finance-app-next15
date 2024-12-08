@@ -3,10 +3,7 @@ type TransactionSummaryProps = {
   date: Date;
   amount: number;
 };
-const TransactionSummaryItems: React.FC<TransactionSummaryProps> = ({
-  date,
-  amount,
-}) => {
+const TransactionSummaryItems = ({ date, amount }: TransactionSummaryProps) => {
   const formattedAmount = useFormatCurrency(amount);
   const formattedDate = date.toLocaleDateString("ja-JP", {
     year: "numeric",

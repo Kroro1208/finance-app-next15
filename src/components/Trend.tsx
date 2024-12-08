@@ -8,7 +8,7 @@ type TrendProps = {
   prevAmount?: number;
 };
 
-const Trend: React.FC<TrendProps> = ({ type, amount, prevAmount }) => {
+const Trend = ({ type, amount, prevAmount }: TrendProps) => {
   const colorClasses: Record<TrendProps["type"], string> = {
     Income: "text-green-700 dark:text-green-300",
     Expense: "text-red-700 dark:text-red-300",

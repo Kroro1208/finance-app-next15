@@ -8,12 +8,12 @@ type TransactionProps = {
   amount: number;
 };
 
-const TransactionItem: React.FC<TransactionProps> = ({
+const TransactionItem = ({
   type,
   category,
   description,
   amount,
-}) => {
+}: TransactionProps) => {
   const typesMap = {
     Income: {
       icon: HandCoins,
