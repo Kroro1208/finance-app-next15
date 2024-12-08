@@ -1,11 +1,14 @@
 import type { NextPage } from "next";
 import Link from "next/link";
+import DarkModeToggle from "./DarkModeToggle";
+import UseServerDarkMode from "../app/hooks/UseServerDarkMode";
 
 type ClassNameProps = {
   className: string;
 };
 
-const PageHeader: NextPage<ClassNameProps> = ({ className }) => {
+const PageHeader: NextPage<ClassNameProps> = async ({ className }) => {
+  const theme = await UseServerDarkMode();
   return (
     <header className={`flex justify-between items-center ${className}`}>
       <Link
@@ -15,7 +18,7 @@ const PageHeader: NextPage<ClassNameProps> = ({ className }) => {
         Finance App
       </Link>
       <div className="flex items-center space-x-4">
-        <div>切り替え</div>
+        <DarkModeToggle defaultMode={theme as "light" | "dark"} />
         <div>ユーザープロフィール</div>
       </div>
     </header>
