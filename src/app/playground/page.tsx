@@ -78,6 +78,7 @@ const PlayGround: NextPage = () => {
               date={new Date("2024-12-08")}
               amount={10000}
             />
+            <hr className="mb-4 border-gray-200 dark:border-gray-800" />
             <TransactionItem
               type="Income"
               amount={10000}
@@ -132,8 +133,8 @@ const PlayGround: NextPage = () => {
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="city" />
-                    <Label htmlFor="city">city</Label>
+                    <Checkbox id="terms" />
+                    <Label htmlFor="terms">入力内容を確認しました</Label>
                   </div>
                 </div>
 

@@ -21,6 +21,7 @@ const TransactionSummaryItems: React.FC<TransactionSummaryProps> = ({
       <div className="min-w-[70px] text-right font-semibold text-green-500">
         {formattedAmount}
       </div>
+      <div className="min-w-[50px]" />
     </div>
   );
 };
