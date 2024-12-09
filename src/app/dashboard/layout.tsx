@@ -7,10 +7,10 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <PageHeader className="my-8" />
       <main>{children}</main>
-      <footer>Footer</footer>
+      <footer className="mt-auto text-center py-8">Footer</footer>
     </div>
   );
 };
