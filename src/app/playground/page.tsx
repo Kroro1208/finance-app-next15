@@ -74,10 +74,7 @@ const PlayGround: NextPage = () => {
           <h2 className="mb-4 text-lg font-mono">Transaction Summary Item</h2>
           <hr className="mb-4 border-gray-200 dark:border-gray-800" />
           <div className="space-y-4">
-            <TransactionSummaryItems
-              date={new Date("2024-12-08")}
-              amount={10000}
-            />
+            <TransactionSummaryItems date={"2024-12-08"} amount={10000} />
             <hr className="mb-4 border-gray-200 dark:border-gray-800" />
             <TransactionItem
               type="Income"
