@@ -9,37 +9,36 @@ vi.mock("@/app/hooks/UseFormatCurrency", () => ({
 describe("TransactionSummaryItems", () => {
   const cases = [
     {
-      date: new Date("2024-01-01"),
+      date: "2024-01-01",
       amount: 1000,
-      expectedDate: "2024/01/01月曜日",
       expectedAmount: "¥1,000",
     },
     {
-      date: new Date("2024-12-31"),
+      date: "2024-12-31",
       amount: 1000000,
-      expectedDate: "2024/12/31火曜日",
       expectedAmount: "¥1,000,000",
     },
     {
-      date: new Date("2024-12-08"),
+      date: "2024-12-08",
       amount: 0,
-      expectedDate: "2024/12/08日曜日",
       expectedAmount: "¥0",
     },
   ];
 
+  afterEach(() => {
+    cleanup();
+  });
+
   it.each(cases)(
-    "renders with date $expectedDate and amount $expectedAmount",
-    ({ date, amount, expectedDate, expectedAmount }) => {
+    "renders with date $date and amount $expectedAmount",
+    ({ date, amount, expectedAmount }) => {
       render(<TransactionSummaryItems date={date} amount={amount} />);
 
-      const dateElement = screen.getByText(expectedDate);
+      const dateElement = screen.getByText(date);
       const amountElement = screen.getByText(expectedAmount);
 
       expect(dateElement).toBeInTheDocument();
       expect(amountElement).toBeInTheDocument();
-
-      cleanup();
     },
   );
 });
