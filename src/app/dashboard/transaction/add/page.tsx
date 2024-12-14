@@ -5,13 +5,12 @@ export const metadata: Metadata = {
   description: "新しい取引を追加する",
 };
 
-const page = () => {
+const Page = () => {
   return (
     <div className="text-4xl font-semibold mb-8">
-      Add Transaction
       <TransactionForm />
     </div>
   );
 };
 
-export default page;
+export default Page;

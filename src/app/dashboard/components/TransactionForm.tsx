@@ -14,13 +14,13 @@ import { Textarea } from "@/components/ui/textarea";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 
-interface FormData {
+type FormData = {
   type: string;
   category: string;
   amount: number;
   created_at: string;
   description: string;
-}
+};
 
 const TransactionForm = () => {
   const {

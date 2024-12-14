@@ -18,7 +18,7 @@ import { Separator } from "@/components/ui/separator";
 
 import type { NextPage } from "next";
 
-const PlayGround: NextPage = () => {
+const Page: NextPage = () => {
   return (
     <div className="min-h-screen min-w-[320px] lg:min-w-[960px] flex flex-col">
       <main className="space-y-8 flex-1 pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
@@ -146,4 +146,4 @@ const PlayGround: NextPage = () => {
   );
 };
 
-export default PlayGround;
+export default Page;
