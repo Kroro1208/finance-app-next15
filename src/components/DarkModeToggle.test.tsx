@@ -1,4 +1,6 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/dom";
+
 import DarkModeToggle from "./DarkModeToggle";
 import * as UseDarkModeHook from "@/app/hooks/UseDarkMode";
 import { vi } from "vitest";

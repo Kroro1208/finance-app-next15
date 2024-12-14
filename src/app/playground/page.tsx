@@ -1,4 +1,5 @@
 import PageHeader from "@/components/PageHeader";
+import Separator from "@/components/Separator";
 import TransactionItem from "@/components/TransactionItem";
 import TransactionSummaryItems from "@/components/TransactionSummaryItems";
 import Trend from "@/components/Trend";
@@ -24,13 +25,13 @@ const PlayGround: NextPage = () => {
         <h1 className="text-3xl sm:text-4xl mt-8">Playground</h1>
         <div>
           <h2 className="mb-4 text-lg font-mono">Page Header</h2>
-          <hr className="mb-4 border-gray-200 dark:border-gray-800" />
+          <Separator />
           <PageHeader className="mt-8" />
         </div>
         {/* Trend */}
         <div>
           <h2 className="mb-4 text-lg font-mono">Trend</h2>
-          <hr className="mb-4 border-gray-200 dark:border-gray-800" />
+          <Separator />
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <Trend type="Income" amount={10000} prevAmount={5000} />
             <Trend type="Expense" amount={1200} prevAmount={1000} />
@@ -41,7 +42,7 @@ const PlayGround: NextPage = () => {
         {/* Transaction Item */}
         <div>
           <h2 className="mb-4 text-lg font-mono">Transaction Item</h2>
-          <hr className="mb-4 border-gray-200 dark:border-gray-800" />
+          <Separator />
           <div className="space-y-4">
             <TransactionItem
               type="Income"
@@ -72,10 +73,10 @@ const PlayGround: NextPage = () => {
         {/* Transaction Summary Item */}
         <div>
           <h2 className="mb-4 text-lg font-mono">Transaction Summary Item</h2>
-          <hr className="mb-4 border-gray-200 dark:border-gray-800" />
+          <Separator />
           <div className="space-y-4">
             <TransactionSummaryItems date={"2024-12-08"} amount={10000} />
-            <hr className="mb-4 border-gray-200 dark:border-gray-800" />
+            <Separator />
             <TransactionItem
               type="Income"
               amount={10000}
@@ -104,7 +105,7 @@ const PlayGround: NextPage = () => {
           {/* 入力欄 */}
           <div className="mt-3">
             <h2 className="mb-4 text-lg font-mono">入力フォーム</h2>
-            <hr className="mb-4 border-gray-200 dark:border-gray-800" />
+            <Separator />
             <Card>
               <CardContent className="pt-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

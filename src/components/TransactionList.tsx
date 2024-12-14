@@ -1,5 +1,6 @@
 import TransactionItem from "./TransactionItem";
 import TransactionSummaryItems from "./TransactionSummaryItems";
+import { Separator } from "./ui/separator";
 
 export type TransactionData = {
   id: number;
@@ -62,7 +63,7 @@ const TransactionList = async () => {
   return Object.entries(groupedData).map(([date, { transactions, amount }]) => (
     <div key={date}>
       <TransactionSummaryItems date={date} amount={amount} />
-      <hr className="my-4 border-gray-200 dark:bg-gray-800" />
+      <Separator />
       <section className="space-y-4">
         {transactions.map((transaction) => (
           <div key={transaction.id}>
