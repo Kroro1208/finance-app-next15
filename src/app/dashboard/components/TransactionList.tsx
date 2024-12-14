@@ -20,7 +20,7 @@ type GroupTransactions = {
 
 // 取引を日付でグループ化する
 export const groupTransactionsByDate = (
-  transactions: TransactionData[]
+  transactions: TransactionData[],
 ): GroupTransactions => {
   const grouped: GroupTransactions = {};
   for (const transaction of transactions) {

@@ -22,12 +22,12 @@ const BaseTrend = ({ type, amount, prevAmount }: TrendProps) => {
       if (!prevAmount || prevAmount === 0) return 0;
       return ((amount - prevAmount) / prevAmount) * 100;
     },
-    []
+    [],
   );
 
   const percentageChange = useMemo(
     () => calcPercentageChange(amount, prevAmount),
-    [amount, prevAmount, calcPercentageChange]
+    [amount, prevAmount, calcPercentageChange],
   );
 
   const formattedCurrency = useFormatCurrency(amount);
