@@ -1,6 +1,6 @@
-import TransactionItem from "./TransactionItem";
-import TransactionSummaryItems from "./TransactionSummaryItems";
-import { Separator } from "./ui/separator";
+import TransactionItem from "@/components/TransactionItem";
+import TransactionSummaryItems from "@/components/TransactionSummaryItems";
+import { Separator } from "@/components/ui/separator";
 
 export type TransactionData = {
   id: number;
@@ -20,7 +20,7 @@ type GroupTransactions = {
 
 // 取引を日付でグループ化する
 export const groupTransactionsByDate = (
-  transactions: TransactionData[],
+  transactions: TransactionData[]
 ): GroupTransactions => {
   const grouped: GroupTransactions = {};
   for (const transaction of transactions) {
@@ -63,7 +63,7 @@ const TransactionList = async () => {
   return Object.entries(groupedData).map(([date, { transactions, amount }]) => (
     <div key={date}>
       <TransactionSummaryItems date={date} amount={amount} />
-      <Separator />
+      <Separator className="mt-2 mb-2" />
       <section className="space-y-4">
         {transactions.map((transaction) => (
           <div key={transaction.id}>

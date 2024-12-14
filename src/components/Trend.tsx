@@ -8,7 +8,7 @@ type TrendProps = {
   prevAmount?: number;
 };
 
-const Trend = ({ type, amount, prevAmount }: TrendProps) => {
+const BaseTrend = ({ type, amount, prevAmount }: TrendProps) => {
   const colorClasses: Record<TrendProps["type"], string> = {
     Income: "text-green-700 dark:text-green-300",
     Expense: "text-red-700 dark:text-red-300",
@@ -22,12 +22,12 @@ const Trend = ({ type, amount, prevAmount }: TrendProps) => {
       if (!prevAmount || prevAmount === 0) return 0;
       return ((amount - prevAmount) / prevAmount) * 100;
     },
-    [],
+    []
   );
 
   const percentageChange = useMemo(
     () => calcPercentageChange(amount, prevAmount),
-    [amount, prevAmount, calcPercentageChange],
+    [amount, prevAmount, calcPercentageChange]
   );
 
   const formattedCurrency = useFormatCurrency(amount);
@@ -59,4 +59,4 @@ const Trend = ({ type, amount, prevAmount }: TrendProps) => {
   );
 };
 
-export default Trend;
+export default BaseTrend;

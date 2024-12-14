@@ -1,5 +1,4 @@
 import PageHeader from "@/components/PageHeader";
-import Separator from "@/components/Separator";
 import TransactionItem from "@/components/TransactionItem";
 import TransactionSummaryItems from "@/components/TransactionSummaryItems";
 import Trend from "@/components/Trend";
@@ -15,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 import type { NextPage } from "next";
 

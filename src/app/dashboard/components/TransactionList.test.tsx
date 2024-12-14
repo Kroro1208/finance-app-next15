@@ -32,7 +32,7 @@ const mockTransactions: TransactionData[] = [
 ];
 
 // コンポーネントのモック
-vi.mock("./TransactionItem", () => ({
+vi.mock("@/components/TransactionItem", () => ({
   default: ({
     amount,
     type,
@@ -48,9 +48,16 @@ vi.mock("./TransactionItem", () => ({
   ),
 }));
 
-vi.mock("./TransactionSummaryItems", () => ({
+vi.mock("@/components/TransactionSummaryItems", () => ({
   default: ({ date, amount }: { date: string; amount: number }) => (
     <div data-testid="summary-item">{`${date}: ${amount}円`}</div>
+  ),
+}));
+
+// Separatorのモック
+vi.mock("@/components/ui/separator", () => ({
+  Separator: ({ className }: { className: string }) => (
+    <hr className={className} data-testid="separator" />
   ),
 }));
 
@@ -73,8 +80,12 @@ describe("TransactionList", () => {
     // サマリーアイテムが正しく表示されることを確認
     const summaryItems = screen.getAllByTestId("summary-item");
     expect(summaryItems).toHaveLength(2); // 2日分のデータ
-    expect(summaryItems[0].textContent).toContain("2024-03-15: 500円"); // 収入1000 - 支出500
-    expect(summaryItems[1].textContent).toContain("2024-03-16: -300円"); // 支出300
+    expect(summaryItems[0].textContent).toContain("2024-03-15: 500");
+    expect(summaryItems[1].textContent).toContain("2024-03-16: -300");
+
+    // セパレーターが表示されることを確認
+    const separators = screen.getAllByTestId("separator");
+    expect(separators).toHaveLength(2); // 各日付グループごとに1つ
 
     // 取引アイテムが正しく表示されることを確認
     const transactionItems = screen.getAllByTestId("transaction-item");
