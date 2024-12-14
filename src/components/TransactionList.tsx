@@ -1,7 +1,7 @@
 import TransactionItem from "./TransactionItem";
 import TransactionSummaryItems from "./TransactionSummaryItems";
 
-type TransactionData = {
+export type TransactionData = {
   id: number;
   amount: number;
   type: "Income" | "Expense" | "Investment" | "Saving";
@@ -18,7 +18,7 @@ type GroupTransactions = {
 };
 
 // 取引を日付でグループ化する
-const groupTransactionsByDate = (
+export const groupTransactionsByDate = (
   transactions: TransactionData[],
 ): GroupTransactions => {
   const grouped: GroupTransactions = {};
