@@ -31,9 +31,18 @@ describe("TransactionForm", () => {
     await user.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText("取引種類は必須です")).toBeInTheDocument();
-      expect(screen.getByText("カテゴリーは必須です")).toBeInTheDocument();
-      expect(screen.getByText("説明は必須です")).toBeInTheDocument();
+      expect(
+        screen.getByText("取引種類を選択してください"),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("カテゴリーを選択してください"),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("説明は5文字以上で入力してください"),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("金額は1円以上で入力してください"),
+      ).toBeInTheDocument();
     });
   });
 
@@ -43,9 +52,12 @@ describe("TransactionForm", () => {
 
     // 通常の入力フィールド
     await user.type(screen.getByRole("spinbutton"), "1000");
-    await user.type(screen.getByRole("textbox"), "Test transaction");
+    await user.type(
+      screen.getByPlaceholderText("取引の説明を入力してください"),
+      "これはテスト用の取引です",
+    );
 
-    // 隠されたselect要素を直接操作
+    // Select要素の選択
     const typeSelect = document.querySelector(
       'select[aria-hidden="true"]',
     ) as HTMLSelectElement;
@@ -66,9 +78,27 @@ describe("TransactionForm", () => {
           type: "income",
           category: "housing",
           amount: 1000,
-          description: "Test transaction",
+          description: "これはテスト用の取引です",
         }),
       );
+    });
+  });
+
+  it("shows error when description is less than 5 characters", async () => {
+    const { user } = setup();
+
+    await user.type(
+      screen.getByPlaceholderText("取引の説明を入力してください"),
+      "テスト",
+    );
+
+    const submitButton = screen.getByRole("button", { name: "登録する" });
+    await user.click(submitButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("説明は5文字以上で入力してください"),
+      ).toBeInTheDocument();
     });
   });
 
@@ -82,5 +112,20 @@ describe("TransactionForm", () => {
   it("handles cancel button click", async () => {
     const { user } = setup();
     await user.click(screen.getByRole("button", { name: "キャンセル" }));
+  });
+
+  it("shows error for invalid amount", async () => {
+    const { user } = setup();
+
+    await user.type(screen.getByRole("spinbutton"), "0");
+
+    const submitButton = screen.getByRole("button", { name: "登録する" });
+    await user.click(submitButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("金額は1円以上で入力してください"),
+      ).toBeInTheDocument();
+    });
   });
 });

@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
   Select,
   SelectContent,
@@ -14,13 +17,61 @@ import { Textarea } from "@/components/ui/textarea";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 
-type FormData = {
-  type: string;
-  category: string;
-  amount: number;
-  created_at: string;
-  description: string;
-};
+const transactionSchema = z.object({
+  type: z
+    .string({
+      required_error: "取引種類は必須です",
+    })
+    .refine(
+      (val) => ["income", "expense", "saving", "investment"].includes(val),
+      {
+        message: "取引種類を選択してください",
+      },
+    ),
+  category: z
+    .string({
+      required_error: "カテゴリーは必須です",
+    })
+    .refine(
+      (val) =>
+        [
+          "housing",
+          "transport",
+          "health",
+          "food",
+          "education",
+          "other",
+        ].includes(val),
+      {
+        message: "カテゴリーを選択してください",
+      },
+    ),
+  amount: z
+    .number({
+      required_error: "金額は必須です",
+      invalid_type_error: "金額は数値で入力してください",
+    })
+    .min(1, {
+      message: "金額は1円以上で入力してください",
+    }),
+  description: z
+    .string({
+      required_error: "説明は必須です",
+    })
+    .min(5, {
+      message: "説明は5文字以上で入力してください",
+    }),
+  created_at: z
+    .string({
+      required_error: "日付は必須です",
+    })
+    .refine((val) => !Number.isNaN(Date.parse(val)), {
+      message: "有効な日付を入力してください",
+    }),
+});
+
+// zodスキーマから型を生成
+type FormData = z.infer<typeof transactionSchema>;
 
 const TransactionForm = () => {
   const {
@@ -29,6 +80,8 @@ const TransactionForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
+    mode: "onTouched",
+    resolver: zodResolver(transactionSchema),
     defaultValues: {
       type: "",
       category: "",
@@ -59,7 +112,6 @@ const TransactionForm = () => {
                 <Controller
                   name="type"
                   control={control}
-                  rules={{ required: "取引種類は必須です" }}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger className="w-full">
@@ -87,7 +139,6 @@ const TransactionForm = () => {
                 <Controller
                   name="category"
                   control={control}
-                  rules={{ required: "カテゴリーは必須です" }}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger className="w-full">
@@ -117,7 +168,7 @@ const TransactionForm = () => {
                   日付
                 </Label>
                 <Input
-                  {...register("created_at", { required: "日付は必須です" })}
+                  {...register("created_at")}
                   type="date"
                   id="created_at"
                   className="w-full"
@@ -136,12 +187,7 @@ const TransactionForm = () => {
                 </Label>
                 <Input
                   {...register("amount", {
-                    required: "金額は必須です",
                     valueAsNumber: true,
-                    min: {
-                      value: 0,
-                      message: "金額は0以上である必要があります",
-                    },
                   })}
                   type="number"
                   id="amount"
@@ -163,7 +209,7 @@ const TransactionForm = () => {
                   説明
                 </Label>
                 <Textarea
-                  {...register("description", { required: "説明は必須です" })}
+                  {...register("description")}
                   id="description"
                   placeholder="取引の説明を入力してください"
                   className="resize-none w-full h-32"
