@@ -86,7 +86,7 @@ const TransactionForm = () => {
       type: "",
       category: "",
       amount: 0,
-      created_at: new Date().toISOString().split("T")[0],
+      created_at: "",
       description: "",
     },
   });
@@ -172,6 +172,7 @@ const TransactionForm = () => {
                   type="date"
                   id="created_at"
                   className="w-full"
+                  placeholder="日付を選択してください"
                 />
                 {errors.created_at && (
                   <p className="text-sm text-red-500">

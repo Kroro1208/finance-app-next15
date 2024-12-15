@@ -57,6 +57,10 @@ describe("TransactionForm", () => {
       "これはテスト用の取引です",
     );
 
+    // 日付の入力
+    const dateInput = screen.getByPlaceholderText("日付を選択してください");
+    fireEvent.change(dateInput, { target: { value: "2024-12-15" } });
+
     // Select要素の選択
     const typeSelect = document.querySelector(
       'select[aria-hidden="true"]',
@@ -79,6 +83,7 @@ describe("TransactionForm", () => {
           category: "housing",
           amount: 1000,
           description: "これはテスト用の取引です",
+          created_at: "2024-12-15",
         }),
       );
     });
@@ -102,11 +107,12 @@ describe("TransactionForm", () => {
     });
   });
 
-  it("renders current date as default value for date input", () => {
+  it("renders empty date input by default", () => {
     render(<TransactionForm />);
-    const dateInput = screen.getByLabelText("日付") as HTMLInputElement;
-    const today = new Date().toISOString().split("T")[0];
-    expect(dateInput.value).toBe(today);
+    const dateInput = screen.getByPlaceholderText(
+      "日付を選択してください",
+    ) as HTMLInputElement;
+    expect(dateInput.value).toBe("");
   });
 
   it("handles cancel button click", async () => {
