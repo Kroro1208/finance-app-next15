@@ -5,7 +5,7 @@ type TrendProps = {
 };
 
 const Trend = async ({ type }: TrendProps) => {
-  const response = await fetch(`http://localhost:3100/trends/${type}`);
+  const response = await fetch(`${process.env.API_URL}/trends/${type}`);
   const { amount, prevAmount } = await response.json();
   return <BaseTrend amount={amount} prevAmount={prevAmount} type={"Income"} />;
 };

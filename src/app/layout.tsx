@@ -26,7 +26,7 @@ export default async function RootLayout({
 }>) {
   const theme = await UseServerDarkMode();
   return (
-    <html lang="en" className={theme}>
+    <html lang="en" className={theme} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

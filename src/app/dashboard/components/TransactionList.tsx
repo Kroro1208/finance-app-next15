@@ -20,7 +20,7 @@ type GroupTransactions = {
 
 // 取引を日付でグループ化する
 export const groupTransactionsByDate = (
-  transactions: TransactionData[],
+  transactions: TransactionData[]
 ): GroupTransactions => {
   const grouped: GroupTransactions = {};
   for (const transaction of transactions) {
@@ -41,21 +41,9 @@ export const groupTransactionsByDate = (
 
   return grouped;
 };
-// 下記のようなgroupedオブジェクトを返す
-// {
-//     "2023-03-15": {
-//       transactions: [
-//         // その日の全ての取引データ
-//         {id: 1, amount: 100, type: "Expense", ...},
-//         {id: 2, amount: 159, type: "Expense", ...},
-//         {id: 3, amount: 500, type: "Income", ...}
-//       ],
-//       amount: 241  // 収入500 - 支出(100 + 159) = 241
-//     }
-//   }
 
 const TransactionList = async () => {
-  const response = await fetch("http://localhost:3001/transactions");
+  const response = await fetch(`${process.env.API_URL}/transactions`);
   const transactions = await response.json();
 
   const groupedData = groupTransactionsByDate(transactions);

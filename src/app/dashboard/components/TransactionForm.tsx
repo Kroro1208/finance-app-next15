@@ -14,8 +14,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { purgeTransactionListCache } from "@/lib/actions";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const transactionSchema = z.object({
   type: z
@@ -23,10 +34,10 @@ const transactionSchema = z.object({
       required_error: "取引種類は必須です",
     })
     .refine(
-      (val) => ["income", "expense", "saving", "investment"].includes(val),
+      (val) => ["Income", "Expense", "Saving", "Investment"].includes(val),
       {
         message: "取引種類を選択してください",
-      },
+      }
     ),
   category: z
     .string({
@@ -44,7 +55,7 @@ const transactionSchema = z.object({
         ].includes(val),
       {
         message: "カテゴリーを選択してください",
-      },
+      }
     ),
   amount: z
     .number({
@@ -74,6 +85,9 @@ const transactionSchema = z.object({
 type FormData = z.infer<typeof transactionSchema>;
 
 const TransactionForm = () => {
+  const router = useRouter();
+  const [isPending, setIsPending] = useState(false);
+
   const {
     register,
     control,
@@ -91,7 +105,24 @@ const TransactionForm = () => {
     },
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
+    try {
+      setIsPending(true);
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          created_at: `${data.created_at}T00:00:00`,
+        }),
+      });
+      await purgeTransactionListCache();
+      router.push("/dashboard");
+    } finally {
+      setIsPending(false);
+    }
     console.log("送信データ:", data);
   };
 
@@ -106,7 +137,11 @@ const TransactionForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Type Selection */}
               <div className="space-y-2">
-                <Label htmlFor="type" className="text-sm font-medium">
+                <Label
+                  id="type-label"
+                  htmlFor="type"
+                  className="text-sm font-medium"
+                >
                   Type
                 </Label>
                 <Controller
@@ -114,14 +149,21 @@ const TransactionForm = () => {
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger
+                        aria-labelledby="type-label"
+                        className="w-full"
+                      >
                         <SelectValue placeholder="取引種類を選択" />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="income">Income</SelectItem>
-                        <SelectItem value="expense">Expense</SelectItem>
-                        <SelectItem value="saving">Saving</SelectItem>
-                        <SelectItem value="investment">Investment</SelectItem>
+                      <SelectContent
+                        className="overflow-y-auto max-h-[300px] z-[1000]"
+                        position="popper"
+                        sideOffset={4}
+                      >
+                        <SelectItem value="Income">Income</SelectItem>
+                        <SelectItem value="Expense">Expense</SelectItem>
+                        <SelectItem value="Saving">Saving</SelectItem>
+                        <SelectItem value="Investment">Investment</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -141,7 +183,10 @@ const TransactionForm = () => {
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger
+                        aria-labelledby="category-label"
+                        className="w-full"
+                      >
                         <SelectValue placeholder="カテゴリーを選択" />
                       </SelectTrigger>
                       <SelectContent>
@@ -167,12 +212,43 @@ const TransactionForm = () => {
                 <Label htmlFor="created_at" className="text-sm font-medium">
                   日付
                 </Label>
-                <Input
-                  {...register("created_at")}
-                  type="date"
-                  id="created_at"
-                  className="w-full"
-                  placeholder="日付を選択してください"
+                <Controller
+                  name="created_at"
+                  control={control}
+                  render={({ field }) => (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {field.value ? (
+                            format(new Date(field.value), "yyyy-MM-dd")
+                          ) : (
+                            <span>日付を選択してください</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={
+                            field.value ? new Date(field.value) : undefined
+                          }
+                          onSelect={(date) =>
+                            field.onChange(
+                              date ? format(date, "yyyy-MM-dd") : ""
+                            )
+                          }
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  )}
                 />
                 {errors.created_at && (
                   <p className="text-sm text-red-500">
@@ -227,7 +303,9 @@ const TransactionForm = () => {
                 <Button variant="outline" type="button">
                   キャンセル
                 </Button>
-                <Button type="submit">登録する</Button>
+                <Button type="submit" disabled={isPending}>
+                  登録する
+                </Button>
               </div>
             </div>
           </CardContent>
